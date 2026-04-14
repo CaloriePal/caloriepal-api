@@ -1,0 +1,41 @@
+# Build outputs
+bin/
+obj/
+
+# User secrets & local config
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Rider
+.idea/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docview
+
+# Visual Studio Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# NuGet
+*.nupkg
+project.lock.json
+packages/
+
+# Entity Framework migrations (optional - remove if you want to track migrations)
+# Migrations/
+
+# Environment files
+.env
+.env.local

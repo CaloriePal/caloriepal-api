@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="CaloriePal.API/CaloriePal.API.csproj" />
+  <Project Path="CaloriePal.Application/CaloriePal.Application.csproj" />
+  <Project Path="CaloriePal.Domain/CaloriePal.Domain.csproj" />
+  <Project Path="CaloriePal.Infrastructure/CaloriePal.Infrastructure.csproj" />
+  <Project Path="CaloriePal.Tests/CaloriePal.Tests.csproj" />
+</Solution>
