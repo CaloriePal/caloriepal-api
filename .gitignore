@@ -19,6 +19,7 @@ secrets.json
 
 # Visual Studio Code
 .vscode/
+.claude/
 
 # OS
 .DS_Store
