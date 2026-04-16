@@ -6,14 +6,16 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using CaloriePal.Application.Auth.SyncProfile;
+using CaloriePal.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+  options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(SyncProfileCommand).Assembly));
+builder.Services.AddSingleton<ILevelingService, LevelingService>();
 
 // Register the current user service
 builder.Services.AddHttpContextAccessor();

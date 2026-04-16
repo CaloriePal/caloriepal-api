@@ -7,6 +7,7 @@ namespace CaloriePal.Infrastructure.Persistence
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IApplicationDbContext
     {
         public DbSet<PlayerProfile> PlayerProfiles => Set<PlayerProfile>();
+        public DbSet<XpEvent> XpEvents => Set<XpEvent>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
