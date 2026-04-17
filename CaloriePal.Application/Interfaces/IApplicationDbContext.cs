@@ -7,6 +7,8 @@ namespace CaloriePal.Application.Interfaces
     {
         DbSet<PlayerProfile> PlayerProfiles { get; }
         DbSet<XpEvent> XpEvents { get; }
+        DbSet<Quest> Quests { get; }
+        DbSet<PlayerQuestLog> PlayerQuestLogs { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

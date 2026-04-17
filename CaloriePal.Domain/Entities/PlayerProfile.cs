@@ -13,6 +13,8 @@ namespace CaloriePal.Domain.Entities
         public int Level { get; private set; }
         public int XpIntoCurrentLevel { get; private set; }
 
+        public int Coins { get; private set; }
+
         public int CurrentStreak { get; private set; }
         public int LongestStreak { get; private set; }
         public DateOnly? LastActivityDate { get; private set; }
@@ -35,6 +37,7 @@ namespace CaloriePal.Domain.Entities
                 Level = 1,
                 TotalXp = 0,
                 XpIntoCurrentLevel = 0,
+                Coins = 0,
                 CurrentStreak = 0,
                 LongestStreak = 0,
                 StreakFreezes = 0,
@@ -61,6 +64,22 @@ namespace CaloriePal.Domain.Entities
 
             UpdatedAt = DateTime.UtcNow;
             return Level - previousLevel;
+        }
+
+        public void AddCoins(int amount)
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
+            Coins += amount;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void SpendCoins(int amount)
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
+            if (Coins < amount)
+                throw new InvalidOperationException("Insufficient coins.");
+            Coins -= amount;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public StreakUpdateResult UpdateStreak(DateOnly today)

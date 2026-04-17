@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(SyncProfileCommand).Assembly));
 builder.Services.AddSingleton<ILevelingService, LevelingService>();
+builder.Services.AddSingleton<ITitleService, TitleService>();
 
 // Register the current user service
 builder.Services.AddHttpContextAccessor();
