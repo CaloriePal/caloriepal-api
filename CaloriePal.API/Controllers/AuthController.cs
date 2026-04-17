@@ -15,12 +15,12 @@ namespace CaloriePal.API.Controllers
         public async Task<IActionResult> SyncProfile([FromBody] SyncProfileRequest request, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(
-                new SyncProfileCommand(request.Email, request.DisplayName, request.AvatarUrl),
+                new SyncProfileCommand(request.DisplayName, request.AvatarUrl),
                 cancellationToken);
 
             return Ok(result);
         }
     }
 
-    public record SyncProfileRequest(string Email, string DisplayName, string? AvatarUrl);
+    public record SyncProfileRequest(string DisplayName, string? AvatarUrl);
 }

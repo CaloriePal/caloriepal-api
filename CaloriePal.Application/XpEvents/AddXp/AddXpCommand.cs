@@ -3,7 +3,7 @@
 namespace CaloriePal.Application.XpEvents.AddXp
 {
     public sealed record AddXpCommand(
-        string UserId,
+        Guid UserId,
         int Amount,
         string Source
     ) : IRequest<AddXpResult>;

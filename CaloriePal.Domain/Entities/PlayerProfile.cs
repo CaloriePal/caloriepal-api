@@ -5,7 +5,7 @@ namespace CaloriePal.Domain.Entities
     public class PlayerProfile
     {
         public Guid Id { get; private set; }
-        public string UserId { get; private set; } = null!;
+        public Guid UserId { get; private set; }
         public string DisplayName { get; private set; } = null!;
         public string? AvatarUrl { get; private set; }
 
@@ -24,7 +24,7 @@ namespace CaloriePal.Domain.Entities
         private PlayerProfile()
         { }
 
-        public static PlayerProfile Create(string userId, string displayName, string? avatarUrl = null)
+        public static PlayerProfile Create(Guid userId, string displayName, string? avatarUrl = null)
         {
             return new PlayerProfile
             {

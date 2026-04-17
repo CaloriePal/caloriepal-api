@@ -27,7 +27,7 @@ namespace CaloriePal.API.Controllers
         public async Task<IActionResult> AddXp([FromBody] AddXpRequest request, CancellationToken ct)
         {
             var result = await _mediator.Send(
-                new AddXpCommand(_currentUser.UserId!, request.Amount, request.Source), ct);
+                new AddXpCommand(_currentUser.UserId, request.Amount, request.Source), ct);
             return Ok(result);
         }
 
@@ -35,7 +35,7 @@ namespace CaloriePal.API.Controllers
         [ProducesResponseType(typeof(UpdateStreakResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateStreak(CancellationToken ct)
         {
-            var result = await _mediator.Send(new UpdateStreakCommand(_currentUser.UserId!), ct);
+            var result = await _mediator.Send(new UpdateStreakCommand(_currentUser.UserId), ct);
             return Ok(result);
         }
 
@@ -44,11 +44,11 @@ namespace CaloriePal.API.Controllers
         public async Task<IActionResult> GrantFreeze([FromBody] GrantFreezeRequest request, CancellationToken ct)
         {
             var remaining = await _mediator.Send(
-                new GrantStreakFreezeCommand(_currentUser.UserId!, request.Count), ct);
+                new GrantStreakFreezeCommand(_currentUser.UserId, request.Count), ct);
             return Ok(new { streakFreezes = remaining });
         }
     }
 
-    public sealed record AddXpRequest(int Amount, string Source, string? Notes = null);
+    public sealed record AddXpRequest(int Amount, string Source);
     public sealed record GrantFreezeRequest(int Count = 1);
 }

@@ -11,7 +11,7 @@
         private XpEvent()
         { }
 
-        public static XpEvent Create(Guid playerProfileId, int amount, string source, string? notes = null)
+        public static XpEvent Create(Guid playerProfileId, int amount, string source)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
 

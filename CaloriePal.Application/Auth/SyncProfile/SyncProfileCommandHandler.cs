@@ -12,32 +12,31 @@ namespace CaloriePal.Application.Auth.SyncProfile
     {
         public async Task<SyncProfileResult> Handle(SyncProfileCommand request, CancellationToken cancellationToken)
         {
-            var userId = currentUser.UserId
-                         ?? throw new UnauthorizedAccessException("User is not authenticated.");
+            var userId = currentUser.UserId;
 
             var profile = await context.PlayerProfiles
-                .FirstOrDefaultAsync(p => p.Id == userId, cancellationToken);
+                .FirstOrDefaultAsync(p => p.UserId == userId, cancellationToken);
 
             bool isNewUser = profile is null;
 
             if (isNewUser)
             {
-                profile = PlayerProfile.Create(userId, request.Email, request.DisplayName, request.AvatarUrl);
+                profile = PlayerProfile.Create(userId, request.DisplayName, request.AvatarUrl);
                 await context.PlayerProfiles.AddAsync(profile, cancellationToken);
             }
             else
             {
-                profile.UpdateProfile(request.DisplayName, request.AvatarUrl);
+                profile!.Update(request.DisplayName, request.AvatarUrl);
             }
 
             await context.SaveChangesAsync(cancellationToken);
 
             return new SyncProfileResult(
-                UserId: profile.Id,
+                Id: profile!.Id,
+                UserId: profile!.UserId,
                 DisplayName: profile.DisplayName,
                 Level: profile.Level,
                 TotalXp: profile.TotalXp,
-                Coins: profile.Coins,
                 IsNewUser: isNewUser
             );
         }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CaloriePal.Application.Streaks.GrantStreakFreeze
 {
-    public sealed record GrantStreakFreezeCommand(string UserId, int Count = 1) : IRequest<int>;
+    public sealed record GrantStreakFreezeCommand(Guid UserId, int Count = 1) : IRequest<int>;
 
     public sealed class GrantStreakFreezeCommandHandler : IRequestHandler<GrantStreakFreezeCommand, int>
     {
