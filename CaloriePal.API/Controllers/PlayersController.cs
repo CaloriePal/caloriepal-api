@@ -1,4 +1,5 @@
 ﻿using CaloriePal.Application.Interfaces;
+using CaloriePal.Application.Players.GetActivityLog;
 using CaloriePal.Application.Players.GetPlayerStats;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,13 @@ namespace caloriepal_api.Controllers
         public async Task<IActionResult> GetMyStats(CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPlayerStatsQuery(_currentUser.UserId), ct);
+            return Ok(result);
+        }
+
+        [HttpGet("me/activity-log")]
+        public async Task<IActionResult> GetActivityLog()
+        {
+            var result = await _mediator.Send(new GetActivityLogQuery(_currentUser.UserId));
             return Ok(result);
         }
     }

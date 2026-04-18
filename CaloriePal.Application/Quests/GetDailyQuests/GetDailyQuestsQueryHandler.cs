@@ -30,7 +30,6 @@ namespace CaloriePal.Application.Quests.GetDailyQuests
                 .ToListAsync(cancellationToken);
 
             var completedTodayIds = await _context.PlayerQuestLogs
-                .AsNoTracking()
                 .Where(l => l.PlayerProfileId == profile.Id && l.CompletedOnDate == today)
                 .Select(l => l.QuestId)
                 .ToHashSetAsync(cancellationToken);
