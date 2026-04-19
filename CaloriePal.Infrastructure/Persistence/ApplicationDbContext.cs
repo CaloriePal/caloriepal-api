@@ -10,6 +10,8 @@ namespace CaloriePal.Infrastructure.Persistence
         public DbSet<XpEvent> XpEvents => Set<XpEvent>();
         public DbSet<Quest> Quests => Set<Quest>();
         public DbSet<PlayerQuestLog> PlayerQuestLogs => Set<PlayerQuestLog>();
+        public DbSet<FoodItem> FoodItems => Set<FoodItem>();
+        public DbSet<MealLog> MealLogs => Set<MealLog>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

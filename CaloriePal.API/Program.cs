@@ -1,19 +1,26 @@
+using CaloriePal.Application.Auth.SyncProfile;
 using CaloriePal.Application.Interfaces;
+using CaloriePal.Domain.Services;
 using CaloriePal.Infrastructure.Persistence;
 using CaloriePal.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using CaloriePal.Application.Auth.SyncProfile;
-using CaloriePal.Domain.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opts =>
+    {
+        opts.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(SyncProfileCommand).Assembly));
 builder.Services.AddSingleton<ILevelingService, LevelingService>();
 builder.Services.AddSingleton<ITitleService, TitleService>();
