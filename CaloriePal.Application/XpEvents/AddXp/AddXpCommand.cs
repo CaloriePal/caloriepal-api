@@ -15,4 +15,6 @@ namespace CaloriePal.Application.XpEvents.AddXp
         int XpRequiredForNextLevel,
         int LevelsGained
     );
+
+    public sealed record AddXpRequest(int Amount, string Source);
 }

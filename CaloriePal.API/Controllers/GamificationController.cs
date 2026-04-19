@@ -48,7 +48,4 @@ namespace CaloriePal.API.Controllers
             return Ok(new { streakFreezes = remaining });
         }
     }
-
-    public sealed record AddXpRequest(int Amount, string Source);
-    public sealed record GrantFreezeRequest(int Count = 1);
 }
