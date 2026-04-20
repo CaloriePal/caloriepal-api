@@ -12,6 +12,9 @@ namespace CaloriePal.Infrastructure.Persistence
         public DbSet<PlayerQuestLog> PlayerQuestLogs => Set<PlayerQuestLog>();
         public DbSet<FoodItem> FoodItems => Set<FoodItem>();
         public DbSet<MealLog> MealLogs => Set<MealLog>();
+        public DbSet<Exercise> Exercises => Set<Exercise>();
+        public DbSet<WorkoutSession> WorkoutSessions => Set<WorkoutSession>();
+        public DbSet<WorkoutExerciseLog> WorkoutExerciseLogs => Set<WorkoutExerciseLog>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +27,20 @@ namespace CaloriePal.Infrastructure.Persistence
             modelBuilder.Entity<Quest>()
                 .Property(q => q.Type)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<WorkoutSession>()
+                .Property(s => s.Category)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Exercise>()
+                .Property(e => e.Category)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<WorkoutSession>()
+                .HasMany(s => s.Exercises)
+                .WithOne()
+                .HasForeignKey(e => e.WorkoutSessionId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

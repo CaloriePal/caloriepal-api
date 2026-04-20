@@ -11,6 +11,9 @@ namespace CaloriePal.Application.Interfaces
         DbSet<PlayerQuestLog> PlayerQuestLogs { get; }
         DbSet<FoodItem> FoodItems { get; }
         DbSet<MealLog> MealLogs { get; }
+        DbSet<Exercise> Exercises { get; }
+        DbSet<WorkoutSession> WorkoutSessions { get; }
+        DbSet<WorkoutExerciseLog> WorkoutExerciseLogs { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
