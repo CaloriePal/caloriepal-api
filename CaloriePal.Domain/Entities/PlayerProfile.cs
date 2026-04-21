@@ -135,5 +135,13 @@ namespace CaloriePal.Domain.Entities
             StreakFreezes += count;
             UpdatedAt = DateTime.UtcNow;
         }
+
+        public void DeductCoins(int amount)
+        {
+            if (amount > Coins) throw new InvalidOperationException("Insufficient coins.");
+            Coins -= amount;
+        }
+
+        public void AddStreakFreeze() => StreakFreezes += 1;
     }
 }
