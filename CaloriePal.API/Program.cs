@@ -67,7 +67,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins("https://caloriepal-web.vercel.app", "http://localhost:3000")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
