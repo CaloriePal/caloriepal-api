@@ -5,6 +5,7 @@ using CaloriePal.Infrastructure.Persistence;
 using CaloriePal.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
@@ -49,6 +50,9 @@ builder.Services.AddScoped<IApplicationDbContext>(provider =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        var supabaseUrl = builder.Configuration["Supabase:Url"]!;
+        options.Authority = $"{supabaseUrl}/auth/v1";
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
