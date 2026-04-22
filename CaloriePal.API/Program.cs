@@ -43,6 +43,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = "authenticated",
             ValidateLifetime = true
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = ctx =>
+            {
+                Console.WriteLine($"JWT FAILED: {ctx.Exception}");
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddSwaggerGen(options =>
