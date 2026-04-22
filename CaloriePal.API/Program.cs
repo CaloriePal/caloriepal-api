@@ -5,10 +5,8 @@ using CaloriePal.Infrastructure.Persistence;
 using CaloriePal.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,34 +31,17 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IApplicationDbContext>(provider =>
     provider.GetRequiredService<ApplicationDbContext>());
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        var supabaseUrl = builder.Configuration["Supabase:Url"]!;
-//        options.Authority = $"{supabaseUrl}/auth/v1";
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuer = false,
-//            ValidateAudience = true,
-//            ValidAudience = "authenticated",
-//            ValidateLifetime = true
-//        };
-//    });
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        var supabaseUrl = builder.Configuration["Supabase:Url"]!;
+        options.Authority = $"{supabaseUrl}/auth/v1";
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidIssuer = $"{builder.Configuration["Supabase:Url"]}/auth/v1",
+            ValidateIssuer = false,
             ValidateAudience = true,
             ValidAudience = "authenticated",
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JwtSecret"]!)
-            )
+            ValidateLifetime = true
         };
     });
 
