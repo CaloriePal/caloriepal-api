@@ -14,6 +14,37 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+var supabaseUrl = builder.Configuration["Supabase:Url"]!;
+Console.WriteLine($"[Auth] Fetching JWKS from {supabaseUrl}");
+
+using var http = new HttpClient();
+var jwksJson = await http.GetStringAsync($"{supabaseUrl}/auth/v1/.well-known/jwks.json");
+var signingKeys = new Microsoft.IdentityModel.Tokens.JsonWebKeySet(jwksJson).GetSigningKeys();
+Console.WriteLine($"[Auth] Loaded {signingKeys.Count()} signing key(s)");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = $"{supabaseUrl}/auth/v1",
+            ValidateAudience = true,
+            ValidAudience = "authenticated",
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKeys = signingKeys
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = ctx =>
+            {
+                Console.WriteLine($"[Auth] JWT FAILED: {ctx.Exception.Message}");
+                return Task.CompletedTask;
+            }
+        };
+    });
+
 builder.Services.AddControllers()
     .AddJsonOptions(opts =>
     {
@@ -30,28 +61,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IApplicationDbContext>(provider =>
     provider.GetRequiredService<ApplicationDbContext>());
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        var supabaseUrl = builder.Configuration["Supabase:Url"]!;
-        options.Authority = $"{supabaseUrl}/auth/v1";
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = true,
-            ValidAudience = "authenticated",
-            ValidateLifetime = true
-        };
-        options.Events = new JwtBearerEvents
-        {
-            OnAuthenticationFailed = ctx =>
-            {
-                Console.WriteLine($"JWT FAILED: {ctx.Exception}");
-                return Task.CompletedTask;
-            }
-        };
-    });
 
 builder.Services.AddSwaggerGen(options =>
 {
