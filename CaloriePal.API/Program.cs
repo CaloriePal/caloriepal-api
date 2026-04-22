@@ -65,7 +65,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", policy =>
     {
         policy
-            .WithOrigins("https://caloriepal-web.vercel.app", "http://localhost:3000")
+            .WithOrigins("https://caloriepal-web.vercel.app", "https://caloriepal-web-git-cmfixes-tonymocanu97s-projects.vercel.app", "http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
