@@ -50,9 +50,6 @@ builder.Services.AddScoped<IApplicationDbContext>(provider =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var supabaseUrl = builder.Configuration["Supabase:Url"]!;
-        options.Authority = $"{supabaseUrl}/auth/v1";
-
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
