@@ -1,9 +1,8 @@
 # CaloriePal API
 
-REST API for [CaloriePal](https://caloriepal-web.vercel.app) - a fitness RPG that turns workout and nutrition tracking into a game. Players earn XP, level up, maintain streaks, and complete daily quests.
+REST API for **CaloriePal** - a fitness RPG that turns workout and nutrition tracking into a game. Players earn XP, level up, maintain streaks, and complete daily quests.
 
-**Live:** `https://caloriepal-api-production.up.railway.app`  
-**Frontend repo:** [caloriepal-web](https://github.com/tonymocanu97/caloriepal-web)
+**Live:** `https://caloriepal-web.vercel.app/`
 
 ---
 
@@ -115,40 +114,6 @@ All endpoints require `Authorization: Bearer <supabase-jwt>` except where noted.
 | POST | `/xp` | Award XP to player |
 | POST | `/streak` | Trigger streak update for today |
 | POST | `/streak/freeze` | Grant streak freezes (admin/internal) |
-
----
-
-## CQRS handlers
-
-Each use case is a self-contained MediatR command or query handler:
-
-```
-Application/
-├── Auth/SyncProfile/
-├── Players/GetPlayerStats/ GetActivityLog/
-├── Quests/GetDailyQuests/ CompleteQuest/
-├── Nutrition/GetDailyNutrition/ LogMeal/ SearchFoodItems/
-├── Workouts/GetWorkoutStats/ LogWorkout/ SearchExercises/
-├── Streaks/UpdateStreak/ PurchaseStreakFreeze/ GrantStreakFreeze/
-└── XpEvents/AddXp/
-```
-
-`CompleteQuestCommandHandler` orchestrates the full quest completion flow: mark quest complete → add XP (with level-up detection) → add coins → update streak → persist.
-
----
-
-## Auth
-
-Supabase issues **ES256** (elliptic curve) JWTs. The backend fetches Supabase's JWKS at startup and configures JWT Bearer validation with the EC public keys directly - no shared secret required, no OIDC discovery dependency at request time.
-
-```csharp
-var jwksJson = await http.GetStringAsync($"{supabaseUrl}/auth/v1/.well-known/jwks.json");
-var signingKeys = new JsonWebKeySet(jwksJson).GetSigningKeys();
-// ValidIssuer = "{supabaseUrl}/auth/v1"
-// ValidAudience = "authenticated"
-```
-
-The current user's `UserId` is extracted from the JWT `sub` claim in `CurrentUserService` and injected via `ICurrentUserService` into every handler that needs it.
 
 ---
 
