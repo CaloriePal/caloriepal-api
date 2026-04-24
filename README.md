@@ -1,6 +1,6 @@
 # CaloriePal API
 
-REST API for [CaloriePal](https://caloriepal-web.vercel.app) — a fitness RPG that turns workout and nutrition tracking into a game. Players earn XP, level up, maintain streaks, and complete daily quests.
+REST API for [CaloriePal](https://caloriepal-web.vercel.app) - a fitness RPG that turns workout and nutrition tracking into a game. Players earn XP, level up, maintain streaks, and complete daily quests.
 
 **Live:** `https://caloriepal-api-production.up.railway.app`  
 **Frontend repo:** [caloriepal-web](https://github.com/tonymocanu97/caloriepal-web)
@@ -17,7 +17,7 @@ REST API for [CaloriePal](https://caloriepal-web.vercel.app) — a fitness RPG t
 | Pattern | CQRS via MediatR 14 |
 | ORM | Entity Framework Core 10 |
 | Database | PostgreSQL (Npgsql) |
-| Auth | JWT Bearer — Supabase ES256 tokens validated via JWKS |
+| Auth | JWT Bearer - Supabase ES256 tokens validated via JWKS |
 | Deployment | Railway |
 
 ---
@@ -34,14 +34,14 @@ CaloriePal.Infrastructure   → EF Core context, migrations, service implementat
 CaloriePal.Tests            → xUnit test project
 ```
 
-Dependencies point inward — `Domain` has no dependencies, `Application` depends only on `Domain`, `Infrastructure` implements `Application` interfaces.
+Dependencies point inward - `Domain` has no dependencies, `Application` depends only on `Domain`, `Infrastructure` implements `Application` interfaces.
 
 ---
 
 ## Domain model
 
 ### PlayerProfile
-The central aggregate. Encapsulates all state transitions as methods — no public setters.
+The central aggregate. Encapsulates all state transitions as methods - no public setters.
 
 ```
 PlayerProfile
@@ -73,43 +73,43 @@ Level 1→2: 100 XP, Level 5→6: ~559 XP, Level 10→11: ~1581 XP. Implemented 
 
 All endpoints require `Authorization: Bearer <supabase-jwt>` except where noted.
 
-### Auth — `/api/auth`
+### Auth - `/api/auth`
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/sync-profile` | Upsert player profile from OAuth user data. Called by frontend after login. |
 
-### Players — `/api/players`
+### Players - `/api/players`
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/me/stats` | Player stats — level, XP, coins, streaks, freeze count |
+| GET | `/me/stats` | Player stats - level, XP, coins, streaks, freeze count |
 | GET | `/me/activity-log` | Recent quest completions with XP awarded |
 
-### Quests — `/api/quests`
+### Quests - `/api/quests`
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/daily` | Today's daily quests with completion status |
-| POST | `/{questId}/complete` | Complete a quest — awards XP, coins, updates streak |
+| POST | `/{questId}/complete` | Complete a quest - awards XP, coins, updates streak |
 
-### Nutrition — `/api/Nutrition`
+### Nutrition - `/api/Nutrition`
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/daily` | Daily macro summary + meal list |
 | POST | `/meals` | Log a meal (from food database or manual macros) |
 | GET | `/foods/search?term=` | Search food database |
 
-### Workouts — `/api/Workouts`
+### Workouts - `/api/Workouts`
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/stats` | Weekly goal progress, total XP, time trained, session count |
 | POST | `/sessions` | Log a workout session with exercises |
 | GET | `/exercises/search?term=` | Search exercise database |
 
-### Shop — `/api/Shop`
+### Shop - `/api/Shop`
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/purchase-streak-freeze` | Spend 400 coins to gain 1 streak freeze |
 
-### Gamification — `/api/gamification`
+### Gamification - `/api/gamification`
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/xp` | Award XP to player |
@@ -139,7 +139,7 @@ Application/
 
 ## Auth
 
-Supabase issues **ES256** (elliptic curve) JWTs. The backend fetches Supabase's JWKS at startup and configures JWT Bearer validation with the EC public keys directly — no shared secret required, no OIDC discovery dependency at request time.
+Supabase issues **ES256** (elliptic curve) JWTs. The backend fetches Supabase's JWKS at startup and configures JWT Bearer validation with the EC public keys directly - no shared secret required, no OIDC discovery dependency at request time.
 
 ```csharp
 var jwksJson = await http.GetStringAsync($"{supabaseUrl}/auth/v1/.well-known/jwks.json");
